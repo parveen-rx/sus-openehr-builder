@@ -135,6 +135,15 @@ public class CompositionManager {
 		DBHandler dbHandler = new DBHandler(url, username, password);
 
 		try {
+			if(dbHandler == null) {
+				System.out.println("dbHandler is null");
+			}
+			if(dbHandler.getConnection() == null) {
+				System.out.println("dbHandler.getConnection() is null");
+			}
+			if(dbHandler.getConnection().isValid(0)) {
+				System.out.println("A valid connection");
+			}
 			if (!dbHandler.getConnection().isValid(0)) {
 				log.error("Connection not valid");
 				System.exit(1);
@@ -142,6 +151,10 @@ public class CompositionManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			log.error("Cannot connect to the source database");
+			System.exit(1);
+		} catch(Exception e) {
+			e.printStackTrace();
+			log.error("General Exceptions...");
 			System.exit(1);
 		}
 
