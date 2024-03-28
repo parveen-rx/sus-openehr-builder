@@ -75,12 +75,6 @@ public class DBHandler {
 				log.debug("Connecting to database...");
 				connection = DriverManager.getConnection(url, username,
 						password);
-				System.out.println("url" + url);
-				System.out.println("username" + username);
-				System.out.println("password" + password);
-				if(connection != null) {
-					System.out.println("getSchema" + connection.getSchema());
-				}
 			}
 		} catch (Exception e) {
 			log.error("Cannot connect to database: " + e.getMessage());

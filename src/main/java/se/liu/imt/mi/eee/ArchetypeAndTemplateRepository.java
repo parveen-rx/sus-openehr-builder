@@ -34,13 +34,11 @@ public class ArchetypeAndTemplateRepository {
 		Collection<File> fileList = listFiles(archetypeDirectory,
 				new FileFilter() {
 					public boolean accept(File pathname) {
-						System.out.println("inside closure ----" + pathname.getName().toLowerCase());
 						return pathname.getName().toLowerCase()
 								.endsWith(archetypeFileExt);
 					}
 				}, true);
 		for (File aFile : fileList) {
-			System.out.println("aFile path ----" + aFile.getAbsolutePath());
 			ADLParser adlParser = new ADLParser(new FileInputStream(aFile),
 					"UTF-8");
 			Archetype archetype = null;
@@ -114,14 +112,12 @@ public class ArchetypeAndTemplateRepository {
 		Vector<File> files = new Vector<File>();
 
 		// Get files / directories in the directory
-		System.out.println("directory ----" + directory.getPath());
 		File[] entries = directory.listFiles();
 
 		// Go over entries
 		for (File entry : entries) {
 			// If there is no filter or the filter accepts the
 			// file / directory, add it to the list
-			System.out.println("entry name ----" + entry.getAbsolutePath());
 			if (filter == null || filter.accept(entry)) {
 				files.add(entry);
 			}

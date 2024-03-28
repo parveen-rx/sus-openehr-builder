@@ -1,11 +1,9 @@
 package br.uerj.lampada.openehr.susbuilder;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -369,7 +367,9 @@ public class EHRGenerator {
 		}
 
 		// read the list of patients from the input file
-		List<String> patients = FileUtils.readLines(new File(patientFile));
+		File pFile = new File(patientFile);
+		List<String> patients = readLines(pFile);
+		System.out.println("patient file record size --> " + patients.size());
 
 		// build compositions
 		EHRGenerator generator = new EHRGenerator(type, format, outputFolder,
@@ -384,6 +384,42 @@ public class EHRGenerator {
 				+ (System.currentTimeMillis() - startTime) + "ms");
 
 		System.exit(0);
+	}
+
+	public static List<String> readLines(File file) {
+		List<String> lines = new ArrayList<>();
+		try (FileInputStream fis = new FileInputStream(file);
+			 FileChannel channel = fis.getChannel()) {
+			long fileSize = channel.size();
+			long bufferSize = Math.min(fileSize, 1 << 24); // 16 MB buffer, adjust as needed
+			long position = 0;
+			while (position < fileSize) {
+				long remaining = fileSize - position;
+				long bytesToMap = Math.min(bufferSize, remaining);
+				MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY, position, bytesToMap);
+				byte[] byteArray = new byte[buffer.remaining()];
+				buffer.get(byteArray);
+				String chunk = new String(byteArray, StandardCharsets.UTF_8);
+				lines.addAll(splitLines(chunk));
+				position += bytesToMap;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lines;
+	}
+
+	private static List<String> splitLines(String chunk) {
+		List<String> lines = new ArrayList<>();
+		try (BufferedReader reader = new BufferedReader(new StringReader(chunk))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				lines.add(line);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return lines;
 	}
 
 }
