@@ -40,7 +40,7 @@ The parameters for connecting to the database must be configured in the builder.
 
 Extract the file terminology.tar.gz in "project-dir/repository/terminologies".
 
-####Syntax:
+#### Syntax:
 
 The syntax of the converter is as follows:
 
@@ -48,7 +48,7 @@ The syntax of the converter is as follows:
 
 The program converts the data from a relational database to the openEHR format and requires at least 8 Gbytes of RAM to run.
 
-###Options:
+### Options:
 
 `–patients patientids`
 The patient id file to be used in the conversion.
@@ -65,24 +65,24 @@ Specifies the type of output. It can be ehr, version or composition.
 `–Aih`
 The –aih argument is used when converting inpatient data. This argument should be omitted in the case of the conversion of outpatient data.
 
-###Examples:
+### Examples:
 
 In the project directory, use one of the following commands:
 
-####For ambulatory data conversion:
+#### For ambulatory data conversion:
 
 `java -Xmx8g -Dfile.encoding=UTF-8 -cp bin/uber-sus-openehr-builder-1.0.1-SNAPSHOT.jar br.uerj.lampada.openehr.susbuilder.EHRGenerator –type ehr –format xml –patients ./patientIds/apac_cnspcn.txt –ehr-dir ./ehr`
 
-####For inpatient data conversion:
+#### For inpatient data conversion:
 
 `java -Xmx8g -Dfile.encoding=UTF-8 -cp bin/uber-sus-openehr-builder-1.0.1-SNAPSHOT.jar br.uerj.lampada.openehr.susbuilder.EHRGenerator –aih –type ehr –format xml –patients ./patientIds/aih_n_aih.txt –ehr-dir ./ehr`
 
 Another way to perform the conversion is to use the run_jobs.sh script that generates a job in parallel for each identifier file within the patient_dir directory.
 
-####Syntax:
+#### Syntax:
 
 `run_jobs.sh -< composition|version|ehr > -< json|xml > -< aih|apac > patient_dir output_dir`
 
-####Example:
+#### Example:
 
 `./run_jobs.sh -composition -json -aih aih_dir aih_comp_output_dir`
