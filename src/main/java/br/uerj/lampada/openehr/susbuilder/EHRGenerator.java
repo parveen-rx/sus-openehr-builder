@@ -130,7 +130,7 @@ public class EHRGenerator {
 				String uuid = CompositionManager.dumpString(patient);
 
 				if (dirSize <= 0) {
-					ehrDir = outputFolder + "/" + type + "/"
+					ehrDir = outputFolder + "/" + type + "/" + patient + "/"
 							+ uuid.replaceAll("\\.", "/");
 				}
 
